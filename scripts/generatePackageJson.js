@@ -9,10 +9,8 @@ const __dirname = path.dirname(__filename);
 const packageJsonPath = path.join(__dirname, '../package.json');
 const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
 
-// Increment the version number
-const versionParts = packageJson.version.split('.').map(Number);
-versionParts[2]++; // Increment the patch version
-const newVersion = versionParts.join('.');
+// Use the current version from package.json
+const newVersion = packageJson.version;
 
 // Define the new package.json content for the dist directory
 const packageJsonContent = {
