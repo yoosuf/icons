@@ -1,6 +1,6 @@
 {
   "name": "@yoosuf/icons",
-  "version": "1.0.7",
+  "version": "1.0.13",
   "description": "A collection of SVG icons for Vue applications.",
   "type": "module",
   "main": "dist/index.js",
@@ -17,6 +17,14 @@
     "dist"
   ],
   "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yoosuf/icons.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yoosuf/icons/issues"
+  },
+  "homepage": "https://github.com/yoosuf/icons#readme",
   "scripts": {
     "prepare": "npm run build",
     "prepublishOnly": "npm run build",
@@ -27,7 +35,7 @@
     "dev": "vite",
     "clean": "rm -rf dist",
     "prebuild": "npm version patch --no-git-tag-version",
-    "build": "npm run prebuild && npm run clean && vue-tsc -b && npm run generate-icons && vite build && npm run generate-package && npm run generate-types && find dist -name '*.svg' -type f -delete",
+    "build": "npm run prebuild && npm run clean && vue-tsc -b && npm run generate-icons && vite build && npm run generate-package && npm run generate-types && cp README.md dist/ && find dist -name '*.svg' -type f -delete",
     "preview": "vite preview",
     "generate-icons": "node scripts/generateComponents.js",
     "generate-package": "node scripts/generatePackageJson.js",

@@ -116,7 +116,17 @@ npm unlink
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
+## Issues and Support
+
+If you find any bugs or have feature requests, please create an issue at [GitHub Issues](https://github.com/yoosuf/icons/issues).
+
+## Repository
+
+- GitHub Repository: [https://github.com/yoosuf/icons](https://github.com/yoosuf/icons)
+- Bug Reports: [https://github.com/yoosuf/icons/issues](https://github.com/yoosuf/icons/issues)
+- Documentation: [https://github.com/yoosuf/icons#readme](https://github.com/yoosuf/icons#readme)
 
 ## License
 
