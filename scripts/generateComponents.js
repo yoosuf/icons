@@ -1,12 +1,19 @@
-import fs from 'fs'; // For synchronous operations
-import fsPromises from 'fs/promises'; // For asynchronous operations
+import fs from 'fs';
+import { promises as fsPromises } from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
-const svgSpritePath = path.resolve(new URL(import.meta.url).pathname, '../../public/svg-sprite.svg');
-const outputDir = path.resolve(new URL(import.meta.url).pathname, '../../src/components');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const svgSpritePath = path.resolve(__dirname, '../public/svg-sprite.svg');
+const outputDir = path.resolve(__dirname, '../src/components');
+const indexFile = path.resolve(__dirname, '../src/index.ts');
 
 async function generateComponents() {
     try {
+        // Create a Set to track unique component names
+        const uniqueComponentNames = new Set();
         // Read the SVG sprite file
         const data = await fsPromises.readFile(svgSpritePath, 'utf8');
 
@@ -17,7 +24,8 @@ async function generateComponents() {
         const symbolIds = [...data.matchAll(/<symbol id="(.*?)"/g)].map(match => match[1]);
 
         // Generate Vue components for each symbol ID
-        symbolIds.forEach(id => {
+        const uniqueSymbolIds = [...new Set(symbolIds)];
+        uniqueSymbolIds.forEach(id => {
             const camelCaseId = id.replace(/-\w/g, match => match[1].toUpperCase()).replace(/^\w/, c => c.toUpperCase());
 
             // Extract the specific symbol content
@@ -52,10 +60,24 @@ const props = defineProps({
             // Write the component file
             fs.writeFileSync(path.join(outputDir, `${camelCaseId}.vue`), componentContent);
         });
-        console.log('Vue components generated successfully!');
-    } catch (err) {
-        console.error('Error reading SVG sprite:', err);
+        // Generate index.ts file
+        const exportStatements = uniqueSymbolIds.map(id => {
+            const componentName = id.replace(/-\w/g, match => match[1].toUpperCase()).replace(/^\w/, c => c.toUpperCase());
+            return `export { default as ${componentName}Icon } from './components/${componentName}.vue';`;
+        });
+
+        const indexContent = `// Auto-generated index file for @yoosuf/icons
+${exportStatements.join('\n')}\n`;
+
+        await fsPromises.writeFile(indexFile, indexContent, 'utf8');
+        console.log('Vue components and index.ts generated successfully!');
+    } catch (error) {
+        console.error('Error reading SVG sprite:', error);
     }
 }
 
-generateComponents();
+export { generateComponents };
+
+generateComponents().catch(error => {
+    console.error('Error generating components:', error);
+});

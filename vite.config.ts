@@ -14,7 +14,7 @@ export default defineConfig({
       formats: ['es', 'umd'], // Output formats
     },
     rollupOptions: {
-      external: ['vue'], // Mark Vue as external
+      external: ['vue', /\.svg$/], // Mark Vue and SVG files as external
       output: {
         globals: {
           vue: 'Vue', // Specify the global variable name for Vue
@@ -29,7 +29,7 @@ export default defineConfig({
           name: 'exclude-file-types',
           generateBundle(_, bundle) {
             // List of file types to exclude
-            const excludeFileTypes = ['.html', '.css'];
+            const excludeFileTypes = ['.html', '.css', '.svg'];
 
             for (const file in bundle) {
               if (excludeFileTypes.some(type => file.endsWith(type))) {
